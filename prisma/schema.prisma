@@ -1,0 +1,150 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  password String?
+
+  Home Home[]
+}
+
+model Home {
+  id          String
+  title       String
+  description String
+  photo       String
+  title_photo String
+  youtube_url String
+  admin_id    BigInt
+  Admin       Admin
+}
+
+model homeQuotes {
+  id      String
+  home_id BigInt
+  Home    Home
+  title   String
+}
+
+model travelQuotes {
+  id      String
+  title   String
+  home_id BigInt
+  Home    Home
+  photo   String
+}
+
+model travelStories {
+  id      String
+  review  String
+  photo   String
+  home_id BigInt
+  Home    Home
+}
+
+model About {
+  id          String
+  admin_id    BigInt
+  Admin       Admin
+  title       String
+  description String
+  photo       String
+}
+
+model Blog {
+  id          String
+  admin_id    BigInt
+  Admin       Admin
+  title       String
+  photo       String
+  tags        String
+  description String
+}
+
+model ContactUs {
+  id                      String
+  admin_id                BigInt
+  Admin                   Admin
+  email_id                String
+  phoneno                 String
+  insta_id                String
+  fb_id                   String
+  team_member_name        String
+  team_member_designation String
+  team_member_photo       String
+}
+
+model Camp {
+  id              String
+  admin_id        BigInt
+  Admin           Admin
+  title           String
+  photo           String
+  location        String
+  highlights      String
+  brochure        String
+  price           String
+  duration_day    String
+  duration_nights String
+  difficulty      String
+  distance        String
+  age_group       String
+  campDate_id     BigInt
+  campDate        campDate[]
+}
+
+model campDate {
+  id      String
+  start   String
+  end     String
+  camp_id BigInt
+  camp    Camp
+}
+
+model package {
+  camp_id       BigInt
+  camp          Camp
+  id            String
+  subpackage    String
+  photo         String
+  price         String
+  noday_nonight String
+}
+
+model schedule {
+  id          String
+  camp_id     BigInt
+  camp        Camp
+  dayno       String
+  day_title   String
+  description String
+  photo       String
+}
+
+model campOtherDetail {
+  id            String
+  camp_id       BigInt
+  camp          Camp
+  inclusion     String
+  exclusion     String
+  cancel_policy String
+  thing_cary    String
+}
+
+model campFaqs {
+  id       String
+  camp_id  BigInt
+  camp     Camp
+  question String
+  answer   String
+}
