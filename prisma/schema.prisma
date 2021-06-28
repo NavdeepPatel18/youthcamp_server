@@ -12,139 +12,174 @@ generator client {
 
 model Admin {
   id       Int     @id @default(autoincrement())
-  name     String  @unique
+  name     String  @unique @db.VarChar(255)
   password String?
 
-  // Home Home[]
+  Home      Home[]
+  ContactUs ContactUs?
+  AboutUs   AboutUs?
+  Camp      Camp[]
+  Blog      Blog[]
 }
 
-// model Home {
-//   id          String
-//   title       String
-//   description String
-//   photo       String
-//   title_photo String
-//   youtube_url String
-//   admin_id    BigInt
-//   Admin       Admin
-// }
+model Home {
+  id          Int    @id @default(autoincrement())
+  title       String @db.VarChar(255)
+  description String
+  photo       String
+  title_photo String
+  youtube_url String
 
-// model homeQuotes {
-//   id      String
-//   home_id BigInt
-//   Home    Home
-//   title   String
-// }
+  homeQuotes    homeQuotes[]
+  travelQuotes  travelQuotes[]
+  travelStories travelStories[]
 
-// model travelQuotes {
-//   id      String
-//   title   String
-//   home_id BigInt
-//   Home    Home
-//   photo   String
-// }
+  admin_id Int
+  Admin    Admin @relation(fields: [admin_id], references: [id])
+}
 
-// model travelStories {
-//   id      String
-//   review  String
-//   photo   String
-//   home_id BigInt
-//   Home    Home
-// }
+model homeQuotes {
+  id    Int    @id @default(autoincrement())
+  title String @db.VarChar(255)
 
-// model About {
-//   id          String
-//   admin_id    BigInt
-//   Admin       Admin
-//   title       String
-//   description String
-//   photo       String
-// }
+  home_id Int
+  Home    Home @relation(fields: [home_id], references: [id])
+}
 
-// model Blog {
-//   id          String
-//   admin_id    BigInt
-//   Admin       Admin
-//   title       String
-//   photo       String
-//   tags        String
-//   description String
-// }
+model travelQuotes {
+  id    Int    @id @default(autoincrement())
+  title String @db.VarChar(255)
+  photo String
 
-// model ContactUs {
-//   id                      String
-//   admin_id                BigInt
-//   Admin                   Admin
-//   email_id                String
-//   phoneno                 String
-//   insta_id                String
-//   fb_id                   String
-//   team_member_name        String
-//   team_member_designation String
-//   team_member_photo       String
-// }
+  home_id Int
+  Home    Home @relation(fields: [home_id], references: [id])
+}
 
-// model Camp {
-//   id              String
-//   admin_id        BigInt
-//   Admin           Admin
-//   title           String
-//   photo           String
-//   location        String
-//   highlights      String
-//   brochure        String
-//   price           String
-//   duration_day    String
-//   duration_nights String
-//   difficulty      String
-//   distance        String
-//   age_group       String
-//   campDate_id     BigInt
-//   campDate        campDate[]
-// }
+model travelStories {
+  id     Int    @id @default(autoincrement())
+  review String
+  photo  String
 
-// model campDate {
-//   id      String
-//   start   String
-//   end     String
-//   camp_id BigInt
-//   camp    Camp
-// }
+  home_id Int
+  Home    Home @relation(fields: [home_id], references: [id])
+}
 
-// model package {
-//   camp_id       BigInt
-//   camp          Camp
-//   id            String
-//   subpackage    String
-//   photo         String
-//   price         String
-//   noday_nonight String
-// }
+model AboutUs {
+  id          Int    @id @default(autoincrement())
+  title       String @db.VarChar(255)
+  description String
+  photo       String
 
-// model schedule {
-//   id          String
-//   camp_id     BigInt
-//   camp        Camp
-//   dayno       String
-//   day_title   String
-//   description String
-//   photo       String
-// }
+  admin_id Int
+  Admin    Admin @relation(fields: [admin_id], references: [id])
+}
 
-// model campOtherDetail {
-//   id            String
-//   camp_id       BigInt
-//   camp          Camp
-//   inclusion     String
-//   exclusion     String
-//   cancel_policy String
-//   thing_cary    String
-// }
+model Blog {
+  id          Int    @id @default(autoincrement())
+  title       String @db.VarChar(255)
+  photo       String
+  tags        String
+  description String
 
-// model campFaqs {
-//   id       String
-//   camp_id  BigInt
-//   camp     Camp
-//   question String
-//   answer   String
-// }
+  admin_id Int
+  Admin    Admin @relation(fields: [admin_id], references: [id])
+}
+
+model ContactUs {
+  id       Int    @id @default(autoincrement())
+  email_id String @unique
+  phoneno  BigInt @db.BigInt
+  insta_id String
+  fb_id    String
+
+  teamMember teamMember[]
+
+  admin_id Int
+  Admin    Admin @relation(fields: [admin_id], references: [id])
+}
+
+model teamMember {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  designation String
+  photo       String
+
+  contactUs_id Int
+  contactUs    ContactUs @relation(fields: [contactUs_id], references: [id])
+}
+
+model Camp {
+  id              Int     @id @default(autoincrement())
+  title           String  @db.VarChar(255)
+  photo           String?
+  location        String?
+  highlights      String?
+  brochure        String?
+  price           Float   @db.Real
+  duration_day    Int
+  duration_nights Int
+  difficulty      String?
+  distance        Int
+  age_group       String?
+
+
+  campDate        campDate[]
+  packageName     packageName[]
+  schedule        schedule[]
+  campOtherDetail campOtherDetail[]
+  campFaqs        campFaqs[]
+
+  admin_id Int
+  Admin    Admin @relation(fields: [admin_id], references: [id])
+}
+
+model campDate {
+  id    Int      @id @default(autoincrement())
+  start DateTime @db.Date
+  end   DateTime @db.Date
+
+  camp_id Int
+  camp    Camp @relation(fields: [camp_id], references: [id])
+}
+
+model packageName {
+  id            Int    @id @default(autoincrement())
+  subpackage    String @db.VarChar(255)
+  photo         String
+  price         Float  @db.Real
+  noday_nonight String
+
+  camp_id Int
+  camp    Camp @relation(fields: [camp_id], references: [id])
+}
+
+model schedule {
+  id          Int     @id @default(autoincrement())
+  dayno       Int
+  day_title   String  @db.VarChar(255)
+  description String?
+  photo       String?
+
+  camp_id Int
+  camp    Camp @relation(fields: [camp_id], references: [id])
+}
+
+model campOtherDetail {
+  id            Int      @id @default(autoincrement())
+  inclusion     String[]
+  exclusion     String[]
+  cancel_policy String[]
+  thing_cary    String[]
+
+  camp_id Int
+  camp    Camp @relation(fields: [camp_id], references: [id])
+}
+
+model campFaqs {
+  id       Int     @id @default(autoincrement())
+  question String?
+  answer   String?
+
+  camp_id Int
+  camp    Camp @relation(fields: [camp_id], references: [id])
+}

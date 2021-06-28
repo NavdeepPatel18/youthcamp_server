@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 const JWT_SECRET =
   "sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk";
 
-module.exports = class MarksheetController extends BaseController {
+module.exports = class AdminController extends BaseController {
   async changepassword(req, res) {
     const { token, newpassword: plainTextPassword } = req.body;
 
@@ -66,8 +66,9 @@ module.exports = class MarksheetController extends BaseController {
 
       const token = jwt.sign(
         {
-          id: admin.id,
-          adminname: admin.name,
+          userId: admin.id,
+          userName: admin.name,
+          userType: "ADMIN",
         },
         JWT_SECRET
       );
