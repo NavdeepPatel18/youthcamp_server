@@ -35,6 +35,11 @@ module.exports = class ContactUsController extends BaseController {
     });
 
     if (type) {
+      const deleteUser = await prisma.teamMember.deleteMany({
+  where: {
+    contactUs_id: type.id,
+  },
+})
       try {
         await prisma.contactUs.update({
           where: {
