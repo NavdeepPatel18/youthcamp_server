@@ -42,7 +42,7 @@ const contactusController = new ContactUsController();
 router.post("/register", (req, res) => adminController.register(req, res));
 
 // login
-router.get("/login", (req, res) => adminController.login(req, res));
+router.post("/login", (req, res) => adminController.login(req, res));
 
 // change password
 router.post("/changepassword", (req, res) =>
