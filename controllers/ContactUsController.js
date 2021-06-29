@@ -50,7 +50,7 @@ module.exports = class ContactUsController extends BaseController {
       teammatePhoto: JSON.parse(req.files.teamMemberPhoto),
     });
 
-    if (type && result.teammatePhoto.length()>0) {
+    if (type) {
       res.json({
         status: "ok",
         data: result,
