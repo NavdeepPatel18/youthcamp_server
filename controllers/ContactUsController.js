@@ -47,7 +47,7 @@ module.exports = class ContactUsController extends BaseController {
         var i = 0;
         teamMember.forEach((element) => {
           element.photo =
-            process.env.BaseUrl + req.files.teamMemberPhoto[i].filename;
+          process.env.BaseUrl +"/images/" + req.files.teamMemberPhoto[i].filename;
           i = i + 1;
         });
 

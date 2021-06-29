@@ -23,7 +23,7 @@ module.exports = class BlogController extends BaseController {
       await prisma.blog.create({
         data: {
           title: title,
-          photo: "http://127.0.0.1:3001/images/" + req.file.filename,
+          photo: process.env.BaseUrl + "/images/" + req.file.filename,
           tags: tags,
           description: description,
           admin_id: req.userId,
@@ -61,7 +61,7 @@ module.exports = class BlogController extends BaseController {
           },
           data: {
             title: title,
-            photo: photo,
+            photo: process.env.BaseUrl + "/images/" + req.file.filename,
             tags: tags,
             description: description,
             admin_id: req.userId,
