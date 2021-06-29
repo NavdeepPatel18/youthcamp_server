@@ -47,10 +47,10 @@ module.exports = class ContactUsController extends BaseController {
       instaId: instaId,
       fbId: fbId,
       teamMate: teamMate,
-      teammatePhoto: JSON.stringify(req.files.teamMemberPhoto),
+      teammatePhoto: JSON.parse(req.files.teamMemberPhoto),
     });
 
-    if (type && req.files.teamMemberPhoto[0]) {
+    if (type && result.teammatePhoto.length()>0) {
       res.json({
         status: "ok",
         data: result,
@@ -100,7 +100,7 @@ module.exports = class ContactUsController extends BaseController {
       res.json({
         status: "error",
         data: result,
-        photo: req.files.teamMemberPhoto,
+        photo: result.teammatePhoto,
       });
     }
 
