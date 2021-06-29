@@ -41,16 +41,16 @@ module.exports = class ContactUsController extends BaseController {
       },
     });
 
-    if (type && teamMemberPhoto) {
-      let result = JSON.stringify({
-        eamil: email,
-        phoneno: phoneno,
-        instaId: instaId,
-        fbId: fbId,
-        teamMate: teamMate,
-        teammatePhoto: req.files.teamMemberPhoto,
-      });
+    let result = JSON.stringify({
+      eamil: email,
+      phoneno: phoneno,
+      instaId: instaId,
+      fbId: fbId,
+      teamMate: teamMate,
+      teammatePhoto: JSON.stringify(req.files.teamMemberPhoto),
+    });
 
+    if (type && req.files.teamMemberPhoto[0]) {
       res.json({
         status: "ok",
         data: result,
@@ -96,7 +96,14 @@ module.exports = class ContactUsController extends BaseController {
       //   console.log(error);
       //   res.json({ status: "error", error: ";))" });
       // }
+    } else {
+      res.json({
+        status: "error",
+        data: result,
+        photo: req.files.teamMemberPhoto,
+      });
     }
+
     // } else {
     //   try {
     //     await prisma.contactUs.create({
