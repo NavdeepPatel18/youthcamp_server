@@ -36,7 +36,12 @@ module.exports = class AboutUsController extends BaseController {
           data: {
             title: title,
             description: description,
-            photo: process.env.BaseUrl +"/images/" + req.file.filename,
+            photo:
+              process.env.BaseUrl +
+              ":" +
+              process.env.PORT +
+              "images/" +
+              req.file.filename,
           },
         });
 
@@ -51,7 +56,7 @@ module.exports = class AboutUsController extends BaseController {
           data: {
             title: title,
             description: description,
-            photo: process.env.BaseUrl +"/images/" + req.file.filename,
+            photo: process.env.BaseUrl + "/images/" + req.file.filename,
             admin_id: req.userId,
           },
         });

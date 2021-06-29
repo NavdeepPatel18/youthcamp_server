@@ -28,7 +28,7 @@ module.exports = class AdminController extends BaseController {
     try {
       const admin = jwt.verify(token, JWT_SECRET);
 
-      const adminid = admin.id;
+      const adminid = admin.userId;
 
       const newpassword = await bcrypt.hash(plainTextPassword, 10);
 
