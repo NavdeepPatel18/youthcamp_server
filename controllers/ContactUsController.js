@@ -26,8 +26,7 @@ module.exports = class ContactUsController extends BaseController {
       req.body.data
     );
     var teamMember = teamMate;
-    var photos = JSON.parse(req.files.teamMemberPhoto);
-    
+    // var photos = JSON.parse(req.files.teamMemberPhoto);
 
     console.log("\n" + "email" + "\t" + email);
     console.log("\n" + "phoneno" + "\t" + phoneno);
@@ -42,17 +41,21 @@ module.exports = class ContactUsController extends BaseController {
       },
     });
 
-    if (type) {
+    if (type && teamMemberPhoto) {
       let result = JSON.stringify({
         eamil: email,
         phoneno: phoneno,
         instaId: instaId,
         fbId: fbId,
         teamMate: teamMate,
-        teammatePhoto: photos,
+        teammatePhoto: req.files.teamMemberPhoto,
       });
 
-      res.json({ status: "ok", data: result });
+      res.json({
+        status: "ok",
+        data: result,
+        photo: req.files.teamMemberPhoto,
+      });
       // try {
       //   console.dir(teamMember, { depth: null });
 
