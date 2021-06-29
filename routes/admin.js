@@ -13,10 +13,24 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/images/");
   },
-
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + Date.now() + ".png");
+    console.log(file);
+    if (file.originalname.length > 6)
+      cb(
+        null,
+        file.fieldname +
+          "-" +
+          Date.now() +
+          file.originalname.substr(
+            file.originalname.length - 6,
+            file.originalname.length
+          )
+      );
+    else cb(null, file.fieldname + "-" + Date.now() + file.originalname);
   },
+  // filename: function (req, file, cb) {
+  //   cb(null, file.fieldname + Date.now() + ".png");
+  // },
 });
 const fileFilter = (req, file, cb) => {
   if (
