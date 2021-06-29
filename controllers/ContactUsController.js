@@ -40,47 +40,64 @@ module.exports = class ContactUsController extends BaseController {
       },
     });
 
-    if (type && teamMember && req.files.teamMemberPhoto) {
-      try {
-        console.dir(teamMember, { depth: null });
+    if (type) {
+      let result = {
+        eamil: email,
+        phoneno: phoneno,
+        instaId: instaId,
+        fbId: fbId,
+        teamMate: teamMate,
+        teammatePhoto: req.files.teamMemberPhoto,
+      };
 
-        var i = 0;
-        teamMember.forEach((element) => {
-          element.photo =
-            process.env.BaseUrl +
-            "/images/" +
-            req.files.teamMemberPhoto[i].filename;
-          i = i + 1;
-        });
+      return this.sendJSONResponse(
+        res,
+        null,
+        {
+          length: 1,
+        },
+        result
+      );
+      // try {
+      //   console.dir(teamMember, { depth: null });
 
-        console.dir(teamMate, { depth: null });
-        const deleteUser = await prisma.teamMember.deleteMany({
-          where: {
-            contactUs_id: type.id,
-          },
-        });
+      //   var i = 0;
+      //   teamMember.forEach((element) => {
+      //     element.photo =
+      //       process.env.BaseUrl +
+      //       "/images/" +
+      //       req.files.teamMemberPhoto[i].filename;
+      //     i = i + 1;
+      //   });
 
-        await prisma.contactUs.update({
-          where: {
-            id: type.id,
-          },
-          data: {
-            email_id: email,
-            phoneno: phoneno,
-            insta_id: instaId,
-            fb_id: fbId,
-            admin_id: req.userId,
-            teamMember: {
-              create: teamMate,
-            },
-          },
-        });
+      //   console.dir(teamMate, { depth: null });
+      //   const deleteUser = await prisma.teamMember.deleteMany({
+      //     where: {
+      //       contactUs_id: type.id,
+      //     },
+      //   });
 
-        res.json({ status: "ok" });
-      } catch (error) {
-        console.log(error);
-        res.json({ status: "error", error: ";))" });
-      }
+      //   await prisma.contactUs.update({
+      //     where: {
+      //       id: type.id,
+      //     },
+      //     data: {
+      //       email_id: email,
+      //       phoneno: phoneno,
+      //       insta_id: instaId,
+      //       fb_id: fbId,
+      //       admin_id: req.userId,
+      //       teamMember: {
+      //         create: teamMate,
+      //       },
+      //     },
+      //   });
+
+      //   res.json({ status: "ok" });
+      // } catch (error) {
+      //   console.log(error);
+      //   res.json({ status: "error", error: ";))" });
+      // }
     }
     // } else {
     //   try {
