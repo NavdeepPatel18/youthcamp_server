@@ -40,14 +40,16 @@ module.exports = class ContactUsController extends BaseController {
       },
     });
 
-    if (type) {
+    if (type && teamMember && req.files.teamMemberPhoto) {
       try {
         console.dir(teamMember, { depth: null });
 
         var i = 0;
         teamMember.forEach((element) => {
           element.photo =
-          process.env.BaseUrl +"/images/" + req.files.teamMemberPhoto[i].filename;
+            process.env.BaseUrl +
+            "/images/" +
+            req.files.teamMemberPhoto[i].filename;
           i = i + 1;
         });
 
@@ -79,27 +81,28 @@ module.exports = class ContactUsController extends BaseController {
         console.log(error);
         res.json({ status: "error", error: ";))" });
       }
-    } else {
-      try {
-        await prisma.contactUs.create({
-          data: {
-            email_id: email,
-            phoneno: phoneno,
-            insta_id: instaId,
-            fb_id: fbId,
-            teamMember: {
-              create: teamMate,
-            },
-            admin_id: req.userId,
-          },
-        });
-
-        res.json({ status: "ok" });
-      } catch (error) {
-        console.log(error);
-        res.json({ status: "error", error: ";))" });
-      }
     }
+    // } else {
+    //   try {
+    //     await prisma.contactUs.create({
+    //       data: {
+    //         email_id: email,
+    //         phoneno: phoneno,
+    //         insta_id: instaId,
+    //         fb_id: fbId,
+    //         teamMember: {
+    //           create: teamMate,
+    //         },
+    //         admin_id: req.userId,
+    //       },
+    //     });
+
+    //     res.json({ status: "ok" });
+    //   } catch (error) {
+    //     console.log(error);
+    //     res.json({ status: "error", error: ";))" });
+    //   }
+    // }
   }
   async getContactUs(req, res) {
     console.log(
