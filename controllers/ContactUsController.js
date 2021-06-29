@@ -26,6 +26,8 @@ module.exports = class ContactUsController extends BaseController {
       req.body.data
     );
     var teamMember = teamMate;
+    var photos = JSON.parse(req.files.teamMemberPhoto);
+    
 
     console.log("\n" + "email" + "\t" + email);
     console.log("\n" + "phoneno" + "\t" + phoneno);
@@ -47,7 +49,7 @@ module.exports = class ContactUsController extends BaseController {
         instaId: instaId,
         fbId: fbId,
         teamMate: teamMate,
-        teammatePhoto: req.files.teamMemberPhoto,
+        teammatePhoto: photos,
       });
 
       res.json({ status: "ok", data: result });
