@@ -47,7 +47,7 @@ module.exports = class ContactUsController extends BaseController {
       instaId: instaId,
       fbId: fbId,
       teamMate: teamMate,
-      teammatePhoto: JSON.parse(req.files.teamMemberPhoto),
+      // teammatePhoto: JSON.parse(req.files.teamMemberPhoto),
     });
 
     if (type) {
@@ -55,6 +55,8 @@ module.exports = class ContactUsController extends BaseController {
         status: "ok",
         data: result,
         photo: req.files.teamMemberPhoto,
+        photo2: JSON.parse(req.files.teamMemberPhoto),
+        photo3: JSON.stringify(req.files.teamMemberPhoto),
       });
       // try {
       //   console.dir(teamMember, { depth: null });
