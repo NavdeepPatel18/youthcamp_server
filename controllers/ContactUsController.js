@@ -50,14 +50,7 @@ module.exports = class ContactUsController extends BaseController {
         teammatePhoto: req.files.teamMemberPhoto,
       };
 
-      return this.sendJSONResponse(
-        res,
-        null,
-        {
-          length: 1,
-        },
-        result
-      );
+      res.json({ status: "ok" ,data:result});
       // try {
       //   console.dir(teamMember, { depth: null });
 
