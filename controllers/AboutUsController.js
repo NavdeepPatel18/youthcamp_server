@@ -36,7 +36,7 @@ module.exports = class AboutUsController extends BaseController {
           data: {
             title: title,
             description: description,
-            photo: process.env.BaseUrl + req.file.filename,
+            photo: process.env.BaseUrl +"/images/" + req.file.filename,
           },
         });
 
