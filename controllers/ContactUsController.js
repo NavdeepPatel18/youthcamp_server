@@ -41,16 +41,16 @@ module.exports = class ContactUsController extends BaseController {
     });
 
     if (type) {
-      let result = {
+      let result = JSON.stringify({
         eamil: email,
         phoneno: phoneno,
         instaId: instaId,
         fbId: fbId,
         teamMate: teamMate,
         teammatePhoto: req.files.teamMemberPhoto,
-      };
+      });
 
-      res.json({ status: "ok" ,data:result});
+      res.json({ status: "ok", data: result });
       // try {
       //   console.dir(teamMember, { depth: null });
 
