@@ -12,7 +12,15 @@ const JWT_SECRET =
 
 module.exports = class AdminController extends BaseController {
   async changepassword(req, res) {
-    const { token, newpassword: plainTextPassword } = req.body;
+
+    console.log(
+      req.isAuth + "\n" + req.userId + "\n" + req.userName + "\n" + req.userType
+    );
+
+    if (!req.isAuth && req.userType === "ADMIN") {
+      return res.json({ status: "error", error: "You  not have access" });
+    }
+    const {newpassword: plainTextPassword } = req.body;
 
     if (!plainTextPassword || typeof plainTextPassword !== "string") {
       return res.json({ status: "error", error: "Invalid password" });
@@ -26,15 +34,12 @@ module.exports = class AdminController extends BaseController {
     }
 
     try {
-      const admin = jwt.verify(token, JWT_SECRET);
-
-      const adminid = admin.userId;
 
       const newpassword = await bcrypt.hash(plainTextPassword, 10);
 
       await prisma.admin.update({
         where: {
-          id: adminid,
+          id: req.userId,
         },
         data: {
           password: newpassword,
