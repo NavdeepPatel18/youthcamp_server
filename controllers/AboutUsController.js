@@ -17,7 +17,9 @@ module.exports = class AboutUsController extends BaseController {
       return res.json({ status: "error", error: "You  not have access" });
     }
 
-    const { title, description, photo } = req.body;
+    console.log(req.body.photo, "req.body.photo");
+
+    const { title, description } = req.body;
 
     const type = await prisma.aboutUs.findFirst({
       where: {
@@ -34,7 +36,7 @@ module.exports = class AboutUsController extends BaseController {
           data: {
             title: title,
             description: description,
-            photo: photo,
+            photo: process.env.BaseUrl + req.file.filename,
           },
         });
 
@@ -49,7 +51,7 @@ module.exports = class AboutUsController extends BaseController {
           data: {
             title: title,
             description: description,
-            photo: photo,
+            photo: "http://127.0.0.1:3000/images/" + req.file.filename,
             admin_id: req.userId,
           },
         });

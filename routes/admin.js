@@ -50,7 +50,7 @@ router.post("/changepassword", (req, res) =>
 );
 
 // Create aboutUs
-router.post("/createaboutus", (req, res) =>
+router.post("/createaboutus", upload.single("aboutusphoto"), (req, res) =>
   aboutusController.createAboutUs(req, res)
 );
 
@@ -58,17 +58,28 @@ router.post("/createaboutus", (req, res) =>
 router.get("/getaboutus", (req, res) => aboutusController.getAboutUs(req, res));
 
 // Create blog
-router.post("/createblog", (req, res) => blogController.createBlog(req, res));
+router.post("/createblog", upload.single("blogphoto"), (req, res) =>
+  blogController.createBlog(req, res)
+);
 
 // Update blog
-router.post("/updateblog", (req, res) => blogController.updateBlog(req, res));
+router.post("/updateblog", upload.single("blogphoto"), (req, res) =>
+  blogController.updateBlog(req, res)
+);
 
 // Get blog
 router.get("/getblog", (req, res) => blogController.getBlog(req, res));
 
 // Create contactUs
-router.post("/createcontactus", (req, res) =>
-  contactusController.createContactUs(req, res)
+router.post(
+  "/createcontactus",
+  upload.fields([
+    {
+      name: "teamMemberPhoto",
+      maxCount: 10,
+    },
+  ]),
+  (req, res) => contactusController.createContactUs(req, res)
 );
 
 // Get ContactUs

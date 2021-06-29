@@ -17,15 +17,21 @@ module.exports = class ContactUsController extends BaseController {
       return res.json({ status: "error", error: "You  not have access" });
     }
 
-    // console.log(req.body);
+    console.dir(JSON.parse(req.body.data), { depth: null });
+    console.log(req.body.teamMemberPhoto, "req.body.photo");
+    // console.dir(req.file.teamMemberPhoto, { depth: null });
+    console.log(req.files.teamMemberPhoto, "req.body.photo");
 
-    const { email, phoneno, instaId, fbId, teamMate } = req.body;
+    const { email, phoneno, instaId, fbId, teamMate } = JSON.parse(
+      req.body.data
+    );
+    var teamMember = teamMate;
 
-    // console.log("\n" + "email" + "\t" + email);
-    // console.log("\n" + "phoneno" + "\t" + phoneno);
-    // console.log("\n" + "instaId" + "\t" + instaId);
-    // console.log("\n" + "fbId" + "\t" + fbId);
-    // console.log("\n" + "teammate" + "\t");
+    console.log("\n" + "email" + "\t" + email);
+    console.log("\n" + "phoneno" + "\t" + phoneno);
+    console.log("\n" + "instaId" + "\t" + instaId);
+    console.log("\n" + "fbId" + "\t" + fbId);
+    console.log("\n" + "teammate" + "\t");
     // console.dir(teamMate[1], { depth: null });
 
     const type = await prisma.contactUs.findFirst({
@@ -35,12 +41,23 @@ module.exports = class ContactUsController extends BaseController {
     });
 
     if (type) {
-      const deleteUser = await prisma.teamMember.deleteMany({
-  where: {
-    contactUs_id: type.id,
-  },
-})
       try {
+        console.dir(teamMember, { depth: null });
+
+        var i = 0;
+        teamMember.forEach((element) => {
+          element.photo =
+            process.env.BaseUrl + req.files.teamMemberPhoto[i].filename;
+          i = i + 1;
+        });
+
+        console.dir(teamMate, { depth: null });
+        const deleteUser = await prisma.teamMember.deleteMany({
+          where: {
+            contactUs_id: type.id,
+          },
+        });
+
         await prisma.contactUs.update({
           where: {
             id: type.id,

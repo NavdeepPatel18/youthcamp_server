@@ -1,0 +1,5 @@
+{
+    "env": {
+        "BaseUrl": "https://youthcamp-server.herokuapp.com/"
+    }
+}
