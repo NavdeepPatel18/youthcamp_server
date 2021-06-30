@@ -18,12 +18,20 @@ module.exports = class HomeController extends BaseController {
     }
 
     // console.log(req.body);
-    console.log(req.body.teamMemberPhoto, "req.body.photo");
+    // console.log(req.body.teamMemberPhoto, "req.body.photo");
     // console.dir(req.file.teamMemberPhoto, { depth: null });
-    console.log(req.files.teamMemberPhoto, "req.body.photo");
+    // console.log(req.files.teamMemberPhoto, "req.body.photo");
 
-    const { email, phoneno, instaId, fbId } = req.body;
-    var teamMate = req.body.teamMate;
+    const {
+      title,
+      description,
+      photo,
+      titlePhoto,
+      youtubeUrl,
+      homeQuotes,
+      travelQuotes,
+      travelStories,
+    } = req.body;
 
     // console.log("\n" + "email" + "\t" + email);
     // console.log("\n" + "phoneno" + "\t" + phoneno);
@@ -40,38 +48,50 @@ module.exports = class HomeController extends BaseController {
 
     if (type) {
       try {
-        console.dir(teamMate, { depth: null });
-
-        // var i = 0;
-        // teamMate.forEach((element) => {
-        //   element.photo = req.files.teamMemberPhoto[i].path;
-        //   i = i + 1;
-        // });
-
-        console.dir(teamMate, { depth: null });
-        const deleteUser = await prisma.teamMember.deleteMany({
+        const deleteHomeQuotes = await prisma.homeQuotes.deleteMany({
           where: {
-            contactUs_id: type.id,
+            home_id: type.id,
           },
         });
 
-        await prisma.home.update({
+        const deleteTravelQuotes = await prisma.travelQuotes.deleteMany({
           where: {
-            id: type.id,
+            home_id: type.id,
           },
-          data: {
-            email_id: email,
-            phoneno: phoneno,
-            insta_id: instaId,
-            fb_id: fbId,
-            admin_id: req.userId,
-            teamMember: {
-              create: teamMate,
+        });
+
+        const deleteTravelStories = await prisma.travelStories.deleteMany({
+          where: {
+            home_id: type.id,
+          },
+        });
+
+        if (deleteHomeQuotes && deleteTravelQuotes && deleteTravelStories) {
+          await prisma.home.update({
+            where: {
+              id: type.id,
             },
-          },
-        });
+            data: {
+              title: title,
+              description: description,
+              photo: photo,
+              title_photo: titlePhoto,
+              youtube_url: youtubeUrl,
+              homeQuotes: {
+                create: homeQuotes,
+              },
+              travelQuotes: {
+                create: travelQuotes,
+              },
+              travelStories: {
+                create: travelStories,
+              },
+              admin_id: req.userId,
+            },
+          });
 
-        res.json({ status: "ok" });
+          res.json({ status: "ok" });
+        }
       } catch (error) {
         console.log(error);
         res.json({ status: "error", error: ";))" });
@@ -80,12 +100,19 @@ module.exports = class HomeController extends BaseController {
       try {
         await prisma.home.create({
           data: {
-            email_id: email,
-            phoneno: phoneno,
-            insta_id: instaId,
-            fb_id: fbId,
-            teamMember: {
-              create: teamMate,
+            title: title,
+            description: description,
+            photo: photo,
+            title_photo: titlePhoto,
+            youtube_url: youtubeUrl,
+            homeQuotes: {
+              create: homeQuotes,
+            },
+            travelQuotes: {
+              create: travelQuotes,
+            },
+            travelStories: {
+              create: travelStories,
             },
             admin_id: req.userId,
           },
@@ -112,7 +139,9 @@ module.exports = class HomeController extends BaseController {
     try {
       const result = await prisma.home.findMany({
         include: {
-          teamMember: true,
+          homeQuotes: true,
+          travelQuotes:true,
+          travelStories:true,
         },
       });
 

@@ -3,8 +3,8 @@ const AdminController = require("../controllers/AdminController");
 const AboutUsController = require("../controllers/AboutUsController");
 const BlogController = require("../controllers/BlogController");
 const ContactUsController = require("../controllers/ContactUsController");
-// const CampController = require("../controllers/CampController");
-// const HomeController = require("../controllers/HomeController");
+const CampController = require("../controllers/CampController");
+const HomeController = require("../controllers/HomeController");
 
 var router = express.Router();
 
@@ -49,8 +49,8 @@ const adminController = new AdminController();
 const aboutusController = new AboutUsController();
 const blogController = new BlogController();
 const contactusController = new ContactUsController();
-// const campController = new CampController();
-// const homeController = new homeController();
+const campController = new CampController();
+const homeController = new HomeController();
 
 // Create admin
 router.post("/register", (req, res) => adminController.register(req, res));
@@ -100,5 +100,22 @@ router.post(
 router.get("/getcontactus", (req, res) =>
   contactusController.getContactUs(req, res)
 );
+
+// Create Home
+router.post("/createhome", (req, res) =>
+  homeController.createHomePage(req, res)
+);
+
+// Get Home
+router.get("/gethome", (req, res) => homeController.getHomePage(req, res));
+
+// Create Camp
+router.post("/createcamp", (req, res) => campController.createCamp(req, res));
+
+// Update Camp
+router.post("/updatecamp", (req, res) => campController.updateCamp(req, res));
+
+// Get Ccamp
+router.get("/getcamp", (req, res) => campController.getCamp(req, res));
 
 module.exports = router;
