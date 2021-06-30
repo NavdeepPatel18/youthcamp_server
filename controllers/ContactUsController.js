@@ -107,27 +107,35 @@ module.exports = class ContactUsController extends BaseController {
       //   console.log(error);
       //   res.json({ status: "error", error: ";))" });
       // }
-    } else {
-      try {
-        await prisma.contactUs.create({
-          data: {
-            email_id: email,
-            phoneno: phoneno,
-            insta_id: instaId,
-            fb_id: fbId,
-            teamMember: {
-              create: teamMate,
-            },
-            admin_id: req.userId,
-          },
-        });
-
-        res.json({ status: "ok" });
-      } catch (error) {
-        console.log(error);
-        res.json({ status: "error", error: ";))" });
-      }
+    } 
+    else{
+      res.json({
+        status: "ok",
+        data: req.body,
+        photo: req.files,
+      });
     }
+    // else {
+    //   try {
+    //     await prisma.contactUs.create({
+    //       data: {
+    //         email_id: email,
+    //         phoneno: phoneno,
+    //         insta_id: instaId,
+    //         fb_id: fbId,
+    //         teamMember: {
+    //           create: teamMate,
+    //         },
+    //         admin_id: req.userId,
+    //       },
+    //     });
+
+    //     res.json({ status: "ok" });
+    //   } catch (error) {
+    //     console.log(error);
+    //     res.json({ status: "error", error: ";))" });
+    //   }
+    // }
   }
   async getContactUs(req, res) {
     console.log(
