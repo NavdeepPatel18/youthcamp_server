@@ -42,14 +42,18 @@ module.exports = class ContactUsController extends BaseController {
 
     if (type) {
       var i = 0;
-        teamMember.forEach((element) => {
-          element.photo =
-            process.env.BaseUrl +
-            "/images/" +
-            req.files.teamMemberPhoto[i].filename;
-          i = i + 1;
-        });
-        res.json({ status: "ok" , data:req.body.data , photo:req.files.teamMemberPhoto });
+      teamMember.forEach((element) => {
+        element.photo =
+          process.env.BaseUrl +
+          "/images/" +
+          req.files.teamMemberPhoto[i].filename;
+        i = i + 1;
+      });
+      res.json({
+        status: "ok",
+        data: req.body,
+        photo: req.files,
+      });
 
       // try {
       //   console.dir(teamMember, { depth: null });
