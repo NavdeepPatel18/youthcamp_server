@@ -41,7 +41,8 @@ module.exports = class ContactUsController extends BaseController {
     });
 
     if (type) {
-      var i = 0;
+      if(req.files[0]){
+        var i = 0;
       teamMember.forEach((element) => {
         element.photo =
           process.env.BaseUrl + "/images/" + req.files[i].filename;
@@ -52,6 +53,18 @@ module.exports = class ContactUsController extends BaseController {
         data: req.body,
         photo: req.files,
         photo2:teamMember,
+      });
+      }
+      // var i = 0;
+      // teamMember.forEach((element) => {
+      //   element.photo =
+      //     process.env.BaseUrl + "/images/" + req.files[i].filename;
+      //   i = i + 1;
+      // });
+      res.json({
+        status: "ok",
+        data: req.body,
+        photo: req.files,
       });
 
       // try {
