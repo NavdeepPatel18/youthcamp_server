@@ -43,7 +43,7 @@ module.exports = class ContactUsController extends BaseController {
       });
 
       if (type) {
-        if (req.body.teamMemberPhoto) {
+        if (req.files[0]) {
           var i = 0;
           teamMember.forEach((element) => {
             element.photo =
