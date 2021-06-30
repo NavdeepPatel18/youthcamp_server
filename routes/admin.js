@@ -87,12 +87,7 @@ router.get("/getblog", (req, res) => blogController.getBlog(req, res));
 // Create contactUs
 router.post(
   "/createcontactus",
-  upload.fields([
-    {
-      name: "teamMemberPhoto",
-      maxCount: 10,
-    },
-  ]),
+  upload.array('teamMemberPhoto'),
   (req, res) => contactusController.createContactUs(req, res)
 );
 
