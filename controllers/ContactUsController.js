@@ -41,10 +41,7 @@ module.exports = class ContactUsController extends BaseController {
     });
 
     if (type) {
-      try {
-        console.dir(teamMember, { depth: null });
-
-        var i = 0;
+      var i = 0;
         teamMember.forEach((element) => {
           element.photo =
             process.env.BaseUrl +
@@ -52,35 +49,48 @@ module.exports = class ContactUsController extends BaseController {
             req.files.teamMemberPhoto[i].filename;
           i = i + 1;
         });
+        res.json({ status: "ok" , data:req.body.data , photo:req.files.teamMemberPhoto });
 
-        console.dir(teamMate, { depth: null });
-        const deleteUser = await prisma.teamMember.deleteMany({
-          where: {
-            contactUs_id: type.id,
-          },
-        });
+      // try {
+      //   console.dir(teamMember, { depth: null });
 
-        await prisma.contactUs.update({
-          where: {
-            id: type.id,
-          },
-          data: {
-            email_id: email,
-            phoneno: phoneno,
-            insta_id: instaId,
-            fb_id: fbId,
-            admin_id: req.userId,
-            teamMember: {
-              create: teamMate,
-            },
-          },
-        });
+      //   var i = 0;
+      //   teamMember.forEach((element) => {
+      //     element.photo =
+      //       process.env.BaseUrl +
+      //       "/images/" +
+      //       req.files.teamMemberPhoto[i].filename;
+      //     i = i + 1;
+      //   });
 
-        res.json({ status: "ok" });
-      } catch (error) {
-        console.log(error);
-        res.json({ status: "error", error: ";))" });
-      }
+      //   console.dir(teamMate, { depth: null });
+      //   const deleteUser = await prisma.teamMember.deleteMany({
+      //     where: {
+      //       contactUs_id: type.id,
+      //     },
+      //   });
+
+      //   await prisma.contactUs.update({
+      //     where: {
+      //       id: type.id,
+      //     },
+      //     data: {
+      //       email_id: email,
+      //       phoneno: phoneno,
+      //       insta_id: instaId,
+      //       fb_id: fbId,
+      //       admin_id: req.userId,
+      //       teamMember: {
+      //         create: teamMate,
+      //       },
+      //     },
+      //   });
+
+      //   res.json({ status: "ok" });
+      // } catch (error) {
+      //   console.log(error);
+      //   res.json({ status: "error", error: ";))" });
+      // }
     } else {
       try {
         await prisma.contactUs.create({
