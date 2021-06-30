@@ -102,63 +102,67 @@ module.exports = class ContactUsController extends BaseController {
       return res.json({ status: "error", error: "You  not have access" });
     }
 
-    console.log(req.body.teamMate + "\n\n" + req.file + "\n\n");
+    // console.log(req.body + "\n\n" + req.file + "\n\n");
 
-    res.json({ status: "ok", bodydata: req.body.teamMate, filedata: req.file });
+    // res.json({ status: "ok", bodydata: req.body, filedata: req.file });
 
-    // if (req.body.teamMate && req.file) {
-    //   try {
-    //     const contactUsId = parseInt(req.params.id);
-    //     const teamMate = JSON.parse(req.body.teamMate);
+    if (req.body && req.file) {
+      try {
+        const contactUsId = parseInt(req.params.id);
+        const { name, designation } = req.body;
+        const teamMate = {
+          name: name,
+          designation: designation,
+        };
 
-    //     console.log(teamMate);
+        console.log(teamMate);
 
-    //     const find_contactUs = await prisma.contactUs.findFirst({
-    //       where: {
-    //         id: contactUsId,
-    //         admin_id: req.userId,
-    //       },
-    //     });
+        const find_contactUs = await prisma.contactUs.findFirst({
+          where: {
+            id: contactUsId,
+            admin_id: req.userId,
+          },
+        });
 
-    //     if (find_contactUs) {
-    //       teamMate.photo = process.env.BaseUrl + "/images/" + req.file.filename;
+        if (find_contactUs) {
+          teamMate.photo = process.env.BaseUrl + "/images/" + req.file.filename;
 
-    //       const result = await prisma.contactUs.update({
-    //         where: {
-    //           id: contactUsId,
-    //         },
-    //         data: {
-    //           teamMember: {
-    //             create: teamMate,
-    //           },
-    //         },
-    //       });
+          const result = await prisma.contactUs.update({
+            where: {
+              id: contactUsId,
+            },
+            data: {
+              teamMember: {
+                create: teamMate,
+              },
+            },
+          });
 
-    //       if (result) {
-    //         res.json({ status: "ok" });
-    //       } else {
-    //         res.json({ status: "error", error: "not added" });
-    //       }
-    //     } else {
-    //       res.json({
-    //         status: "error",
-    //         error: "please provid contactUs page detail",
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     res.json({ status: "error", error: ";))" });
-    //   }
-    // } else if (req.body.teamMate) {
-    //   res.json({
-    //     status: "bed request",
-    //     error: "please send data",
-    //   });
-    // } else {
-    //   res.json({
-    //     status: "error , no data pass",
-    //   });
-    // }
+          if (result) {
+            res.json({ status: "ok" });
+          } else {
+            res.json({ status: "error", error: "not added" });
+          }
+        } else {
+          res.json({
+            status: "error",
+            error: "please provid contactUs page detail",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        res.json({ status: "error", error: ";))" });
+      }
+    } else if (req.body.teamMate) {
+      res.json({
+        status: "bed request",
+        error: "please send data",
+      });
+    } else {
+      res.json({
+        status: "error , no data pass",
+      });
+    }
   }
   async deleteTeamMember(req, res) {
     console.log(
