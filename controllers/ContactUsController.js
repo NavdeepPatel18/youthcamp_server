@@ -143,7 +143,7 @@ module.exports = class ContactUsController extends BaseController {
         console.log(error);
         res.json({ status: "error", error: ";))" });
       }
-    } else if (req.body) {
+    } else if (req.body.teamMate) {
       res.json({
         status: "bed request",
         error: "please send data",
