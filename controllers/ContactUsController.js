@@ -151,7 +151,7 @@ module.exports = class ContactUsController extends BaseController {
         }
       } catch (error) {
         console.log(error);
-        res.json({ status: "error", error: ";))" });
+        res.json({ status: "error", errors: error });
       }
     } else if (req.body.teamMate) {
       res.json({
