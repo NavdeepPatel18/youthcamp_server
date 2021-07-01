@@ -130,6 +130,7 @@ module.exports = class CampController extends BaseController {
             difficulty,
             distance,
             age_group,
+            campOtherDetail,
           } = JSON.parse(req.body.data);
 
           const data = {
@@ -142,17 +143,20 @@ module.exports = class CampController extends BaseController {
             difficulty: difficulty,
             distance: distance,
             age_group: age_group,
+            campOtherDetail: {
+              create: campOtherDetail,
+            },
           };
 
           console.log(data);
 
-          if (req.files.photo) {
+          if (req.files.basicphoto[0]) {
             data.photo =
-              process.env.BaseUrl + "/images/" + req.files.photo[0].filename;
+              process.env.BaseUrl + "/images/" + req.files.basicphoto[0].filename;
           }
-          if (req.files.brochure) {
+          if (req.files.basicphoto[1]) {
             data.brochure =
-              process.env.BaseUrl + "/images/" + req.files.brochure[0].filename;
+              process.env.BaseUrl + "/images/" + req.files.basicphoto[0].filename;
           }
 
           const result = await prisma.camp.update({
@@ -328,58 +332,6 @@ module.exports = class CampController extends BaseController {
             },
             data: {
               schedule: {
-                create: data,
-              },
-            },
-          });
-
-          if (result) {
-            res.json({ status: "ok", data: result });
-          } else {
-            res.json({ status: "error", error: "some thing went wrong" });
-          }
-        }
-      } catch (error) {
-        console.log(error);
-        res.json({ status: "error", error: "Some thing went wrong" });
-      }
-    } else {
-      res.json({
-        status: "error , no data pass",
-      });
-    }
-  }
-  async addOtherDetail(req, res) {
-    if (!req.isAuth && req.userType === "ADMIN") {
-      return res.json({ status: "error", error: "You  not have access" });
-    }
-
-    if (req.body) {
-      try {
-        const findCamp = await prisma.camp.findUnique({
-          where: {
-            id: parseInt(req.params.id),
-          },
-        });
-
-        if (findCamp) {
-          const { inclusion, exclusion, cancel_policy, thing_cary } = req.body;
-
-          const data = {
-            inclusion: inclusion,
-            exclusion: exclusion,
-            cancel_policy: cancel_policy,
-            thing_cary: thing_cary,
-          };
-
-          console.log(data);
-
-          const result = await prisma.camp.update({
-            where: {
-              id: findCamp.id,
-            },
-            data: {
-              campOtherDetail: {
                 create: data,
               },
             },

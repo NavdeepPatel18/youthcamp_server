@@ -155,10 +155,7 @@ router.post("/addfaqs/:id", (req, res) => campController.addFAQS(req, res));
 // Update Camp
 router.post(
   "/updatecamp/:id",
-  upload.fields([
-    { name: "photo", maxCount: 1 },
-    { name: "brochure", maxCount: 1 },
-  ]),
+  upload.fields([{ name: "basicphoto", maxCount: 2 }]),
   (req, res) => campController.updateCamp(req, res)
 );
 

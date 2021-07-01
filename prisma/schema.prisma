@@ -144,6 +144,7 @@ model campDate {
 
 model packageName {
   id            Int    @id @default(autoincrement())
+  name          String @db.VarChar(255)
   subpackage    String @db.VarChar(255)
   photo         String
   price         Float  @db.Real
