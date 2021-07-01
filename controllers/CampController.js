@@ -152,12 +152,22 @@ module.exports = class CampController extends BaseController {
 
           if (req.files.basicphoto[0]) {
             data.photo =
-              process.env.BaseUrl + "/images/" + req.files.basicphoto[0].filename;
+              process.env.BaseUrl +
+              "/images/" +
+              req.files.basicphoto[0].filename;
           }
           if (req.files.basicphoto[1]) {
             data.brochure =
-              process.env.BaseUrl + "/images/" + req.files.basicphoto[0].filename;
+              process.env.BaseUrl +
+              "/images/" +
+              req.files.basicphoto[0].filename;
           }
+
+          await prisma.campOtherDetail.deleteMany({
+            where: {
+              camp_id: findCamp.id,
+            },
+          });
 
           const result = await prisma.camp.update({
             where: {
@@ -252,11 +262,12 @@ module.exports = class CampController extends BaseController {
         });
 
         if (findCamp) {
-          const { subpackage, price, noday_nonight } = JSON.parse(
+          const { name, subpackage, price, noday_nonight } = JSON.parse(
             req.body.data
           );
 
           const data = {
+            name: name,
             subpackage: subpackage,
             price: price,
             noday_nonight: noday_nonight,
