@@ -33,28 +33,19 @@ module.exports = class CampController extends BaseController {
         } = JSON.parse(req.body.data);
 
         const File = req.files;
-        await console.dir(JSON.parse(req.body.data));
-        await console.log(
-          "\nbasic photo:-\n",
-          File.basicphoto,
-          "\npackage file:-\n",
-          File.packagephoto,
-          "\nschedule file:-\n",
-          File.schedulephoto
-        );
 
-        if (File.package && File.schedule) {
-          var i,
+        if (File.packagephoto && File.schedulephoto) {
+          var i = 0,
             j = 0;
-          packageName.map((element) => {
-            packageName.photo =
+          packageName.forEach((element) => {
+            element.photo =
               process.env.BaseUrl + "/images/" + File.packagephoto[i].filename;
             i++;
           });
 
-          schedule.map((element) => {
-            schedule.photo =
-              process.env.BaseUrl + "/images/" + File.schedulephoto[i].filename;
+          schedule.forEach((element) => {
+            element.photo =
+              process.env.BaseUrl + "/images/" + File.schedulephoto[j].filename;
             j++;
           });
         }
@@ -87,18 +78,16 @@ module.exports = class CampController extends BaseController {
           },
         };
 
-        await console.dir(data, { depth: null });
+        if (File.basicphoto) {
+          data.photo =
+            process.env.BaseUrl + "/images/" + req.files.basicphoto[0].filename;
+          data.brochure =
+            process.env.BaseUrl + "/images/" + req.files.basicphoto[1].filename;
+        }
 
-        // if (File.basicphoto) {
-        //   data.photo =
-        //     process.env.BaseUrl + "/images/" + req.files.basicphoto[0].filename;
-        //   data.brochure =
-        //     process.env.BaseUrl + "/images/" + req.files.basicphoto[1].filename;
-        // }
-
-        // await prisma.camp.create({
-        //   data: data,
-        // });
+        await prisma.camp.create({
+          data: data,
+        });
 
         res.json({ status: "ok" });
       } catch (error) {
