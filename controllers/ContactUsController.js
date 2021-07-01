@@ -102,10 +102,6 @@ module.exports = class ContactUsController extends BaseController {
       return res.json({ status: "error", error: "You  not have access" });
     }
 
-    // console.log(req.body + "\n\n" + req.file + "\n\n");
-
-    // res.json({ status: "ok", bodydata: req.body, filedata: req.file });
-
     if (req.body && req.file) {
       try {
         const contactUsId = parseInt(req.params.id);
@@ -114,8 +110,6 @@ module.exports = class ContactUsController extends BaseController {
           name: name,
           designation: designation,
         };
-
-        console.log(teamMate);
 
         const find_contactUs = await prisma.contactUs.findFirst({
           where: {

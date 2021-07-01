@@ -97,10 +97,8 @@ router.get("/getcontactus", (req, res) =>
 );
 
 // Create teamMember
-router.post(
-  "/addteam/:id",
-  upload.single("teamMemberPhoto"),
-  (req, res) => contactusController.addTeamMember(req, res)
+router.post("/addteam/:id", upload.single("teamMemberPhoto"), (req, res) =>
+  contactusController.addTeamMember(req, res)
 );
 
 // delete teamMember
@@ -117,12 +115,84 @@ router.post("/createhome", (req, res) =>
 router.get("/gethome", (req, res) => homeController.getHomePage(req, res));
 
 // Create Camp
-router.post("/createcamp", (req, res) => campController.createCamp(req, res));
+router.post(
+  "/createcamp",
+  upload.fields([
+    { name: "basicphoto", maxCount: 2 },
+    { name: "packagephoto" },
+    { name: "schedulephoto" },
+  ]),
+  (req, res) => campController.createCamp(req, res)
+);
+
+// add CampDate
+router.post("/addcampdate/:id", (req, res) =>
+  campController.addCampDate(req, res)
+);
+
+// add Package
+router.post(
+  "/addpackage/:id",
+  upload.fields([{ name: "photo", maxCount: 1 }]),
+  (req, res) => campController.addPackage(req, res)
+);
+
+// add Schedule
+router.post(
+  "/addschedule/:id",
+  upload.fields([{ name: "photo", maxCount: 1 }]),
+  (req, res) => campController.addSchedule(req, res)
+);
+
+// add CampOtherDetail
+router.post("/addcampotherdetail/:id", (req, res) =>
+  campController.addOtherDetail(req, res)
+);
+
+// add FAQS
+router.post("/addfaqs/:id", (req, res) => campController.addFAQS(req, res));
 
 // Update Camp
-router.post("/updatecamp", (req, res) => campController.updateCamp(req, res));
+router.post(
+  "/updatecamp/:id",
+  upload.fields([
+    { name: "photo", maxCount: 1 },
+    { name: "brochure", maxCount: 1 },
+  ]),
+  (req, res) => campController.updateCamp(req, res)
+);
 
-// Get Ccamp
+// Get Camp
 router.get("/getcamp", (req, res) => campController.getCamp(req, res));
+
+// delete camp
+router.delete("/deletecamp/:id", (req, res) =>
+  campController.deletecamp(req, res)
+);
+
+// delete CampDate
+router.delete("/deletecampdate/:id", (req, res) =>
+  campController.deleteCampDate(req, res)
+);
+
+// delete package
+router.delete("/deletepackage/:id", (req, res) =>
+  campController.deletePackage(req, res)
+);
+
+// delete schedule
+router.delete("/deleteschedule/:id", (req, res) =>
+  campController.deleteSchedule(req, res)
+);
+
+// delete camp otherdetail
+router.delete("/deletecampotherdetail/:id", (req, res) =>
+  campController.deleteCampOtherDetail(req, res)
+);
+
+// delete campfaqs
+router.delete("/deletecampfaqs/:id", (req, res) =>
+  campController.deleteCampFAQS(req, res)
+);
 
 module.exports = router;
