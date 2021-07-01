@@ -9,15 +9,9 @@ const prisma = new PrismaClient();
 
 module.exports = class AboutUsController extends BaseController {
   async createAboutUs(req, res) {
-    console.log(
-      req.isAuth + "\n" + req.userId + "\n" + req.userName + "\n" + req.userType
-    );
-
     if (!req.isAuth && req.userType === "ADMIN") {
       return res.json({ status: "error", error: "You  not have access" });
     }
-
-    console.log(req.body.photo, "req.body.photo");
 
     const { title, description } = req.body;
 
@@ -40,7 +34,7 @@ module.exports = class AboutUsController extends BaseController {
           },
         });
 
-        res.json({ status: "ok" });
+        res.json({ status: "ok"});
       } catch (error) {
         console.log(error);
         res.json({ status: "error", error: ";))" });

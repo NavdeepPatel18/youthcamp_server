@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 var path = require("path");
 
-const cors = require("cors");
 
 const isAuth = require("./middleware/is-auth");
 const adminRouter = require("./routes/admin");
@@ -14,25 +13,39 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use(cors());
+
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
     "Access-Control-Allow-Headers",
-    "Content-type, Authorization,Origin, X-Requested-With,Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  // res.setHeader("Access-Control-Allow-Credentials", true);
   if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Methods", "POST,GET,OPITIONS");
-    return res.sendStatus(200);
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
   }
   next();
 });
 
 app.use(isAuth);
-
 app.use("/admin", adminRouter);
+
+
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log("Server up at " + port);

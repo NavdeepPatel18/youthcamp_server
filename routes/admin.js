@@ -7,8 +7,8 @@ const CampController = require("../controllers/CampController");
 const HomeController = require("../controllers/HomeController");
 
 var router = express.Router();
-
 var multer = require("multer");
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/images/");
