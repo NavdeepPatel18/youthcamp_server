@@ -77,12 +77,16 @@ router.post("/createblog", upload.single("blogphoto"), (req, res) =>
 );
 
 // Update blog
-router.post("/updateblog", upload.single("blogphoto"), (req, res) =>
+router.post("/updateblog/:id", upload.single("blogphoto"), (req, res) =>
   blogController.updateBlog(req, res)
 );
 
 // Get blog
 router.get("/getblog", (req, res) => blogController.getBlog(req, res));
+
+// Delete blog
+router.delete("/deleteblog/:id", (req, res) => blogController.deleteBlog(req, res));
+
 
 // Create contactUs
 router.post(
