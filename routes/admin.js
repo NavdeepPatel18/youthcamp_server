@@ -107,12 +107,34 @@ router.delete("/deleteteam/:id", (req, res) =>
 );
 
 // Create Home
-router.post("/createhome", (req, res) =>
-  homeController.createHomePage(req, res)
+router.post(
+  "/createhome",
+  upload.fields([{ name: "homephoto", maxCount: 2 }]),
+  (req, res) => homeController.createHomePage(req, res)
 );
 
 // Get Home
 router.get("/gethome", (req, res) => homeController.getHomePage(req, res));
+
+// Create TravelQuotes
+router.post("/addtravelquotes/:id", upload.single("photo"), (req, res) =>
+  homeController.addTravelQuotes(req, res)
+);
+
+// Create TravelStories
+router.post("/addtravelstories/:id", upload.single("photo"), (req, res) =>
+  homeController.addTravelStories(req, res)
+);
+
+// delete TravelQuotes
+router.delete("/deletetravelquotes/:id", (req, res) =>
+  homeController.deleteTravelQuotes(req, res)
+);
+
+// delete TravelStories
+router.delete("/deletetravelstories/:id", (req, res) =>
+  homeController.deleteTravelStories(req, res)
+);
 
 // Create Camp
 router.post(
