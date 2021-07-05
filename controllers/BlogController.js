@@ -1,10 +1,6 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 
 const BaseController = require("./BaseController");
-const BadRequest = require("../errors/BadRequest");
-const NotFound = require("../errors/NotFound");
 const prisma = new PrismaClient();
 
 module.exports = class BlogController extends BaseController {
@@ -136,14 +132,6 @@ module.exports = class BlogController extends BaseController {
     }
   }
   async getBlog(req, res) {
-    console.log(
-      req.isAuth + "\n" + req.userId + "\n" + req.userName + "\n" + req.userType
-    );
-
-    if (!req.isAuth) {
-      return res.json({ status: "error", error: "You  not have access" });
-    }
-
     try {
       const result = await prisma.blog.findMany();
 

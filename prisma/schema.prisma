@@ -150,8 +150,9 @@ model packageName {
   price         Float  @db.Real
   noday_nonight String
 
-  camp_id Int
-  camp    Camp @relation(fields: [camp_id], references: [id])
+  camp_id      Int
+  camp         Camp           @relation(fields: [camp_id], references: [id])
+  registration registration[]
 }
 
 model schedule {
@@ -183,4 +184,75 @@ model campFaqs {
 
   camp_id Int
   camp    Camp @relation(fields: [camp_id], references: [id])
+}
+
+model User {
+  id          BigInt   @id @default(autoincrement())
+  name        String
+  mobileno    BigInt
+  emailid     String
+  idprof_name String
+  id_prof     String
+  dob         DateTime @db.Date
+  gender      String
+  password    String
+
+  registration registration[]
+}
+
+model registration {
+  id              BigInt   @id @default(autoincrement())
+  health_problem  String
+  blood_group     String
+  subpackage_name String
+  start_date      DateTime @db.Date
+  end_date        DateTime @db.Date
+  status          String
+
+  package_id Int
+  package    packageName @relation(fields: [package_id], references: [id])
+
+  user_id BigInt
+  user    User   @relation(fields: [user_id], references: [id])
+
+  participants participants[]
+  checkout     checkout?
+  payment      payment?
+}
+
+model participants {
+  id             BigInt   @id @default(autoincrement())
+  name           String
+  mobile_no      BigInt
+  email          String
+  gender         String
+  id_proof_name  String
+  id_proof       String
+  dob            DateTime @db.Date
+  health_problem String
+  blood_group    String
+
+  registration_id BigInt
+  registration    registration @relation(fields: [registration_id], references: [id])
+}
+
+model checkout {
+  id           BigInt   @id @default(autoincrement())
+  method       String
+  booking_date DateTime @db.Date
+  price        Float
+  tax_price    Float
+  total_price  Float
+
+  registration_id BigInt
+  registration    registration @relation(fields: [registration_id], references: [id])
+}
+
+model payment {
+  id             BigInt @id @default(autoincrement())
+  payment_method String
+  payment_token  String
+
+  registration_id BigInt
+  registration    registration @relation(fields: [registration_id], references: [id])
 }

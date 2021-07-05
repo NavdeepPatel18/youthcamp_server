@@ -1,10 +1,6 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { PrismaClient, Prisma } = require("@prisma/client");
 
 const BaseController = require("./BaseController");
-const BadRequest = require("../errors/BadRequest");
-const NotFound = require("../errors/NotFound");
 const prisma = new PrismaClient();
 
 module.exports = class HomeController extends BaseController {
@@ -94,10 +90,6 @@ module.exports = class HomeController extends BaseController {
     }
   }
   async getHomePage(req, res) {
-    if (!req.isAuth) {
-      return res.json({ status: "error", error: "You  not have access" });
-    }
-
     try {
       const result = await prisma.home.findMany({
         include: {
@@ -273,7 +265,6 @@ module.exports = class HomeController extends BaseController {
     }
   }
   async deleteTravelStories(req, res) {
-    
     if (!req.isAuth && req.userType === "ADMIN") {
       return res.json({ status: "error", error: "You not have access" });
     }

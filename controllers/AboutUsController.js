@@ -1,10 +1,6 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 
 const BaseController = require("./BaseController");
-const BadRequest = require("../errors/BadRequest");
-const NotFound = require("../errors/NotFound");
 const prisma = new PrismaClient();
 
 module.exports = class AboutUsController extends BaseController {
@@ -34,7 +30,7 @@ module.exports = class AboutUsController extends BaseController {
           },
         });
 
-        res.json({ status: "ok"});
+        res.json({ status: "ok" });
       } catch (error) {
         console.log(error);
         res.json({ status: "error", error: ";))" });
@@ -58,16 +54,6 @@ module.exports = class AboutUsController extends BaseController {
     }
   }
   async getAboutUs(req, res) {
-    console.log(
-      req.isAuth + "\n" + req.userId + "\n" + req.userName + "\n" + req.userType
-    );
-
-    if (!req.isAuth) {
-      return res.json({ status: "error", error: "You  not have access" });
-    }
-
-    // const { title, description, photo } = req.body;
-
     try {
       const result = await prisma.aboutUs.findMany();
 
