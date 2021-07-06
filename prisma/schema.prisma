@@ -190,18 +190,25 @@ model User {
   id          BigInt   @id @default(autoincrement())
   name        String
   mobileno    BigInt
-  emailid     String
+  email       String
   idprof_name String
   id_prof     String
   dob         DateTime @db.Date
   gender      String
-  password    String
+  photo       String
 
   registration registration[]
 }
 
 model registration {
   id              BigInt   @id @default(autoincrement())
+  name            String
+  mobileno        BigInt
+  emailid         String
+  idprof_name     String
+  id_prof         String
+  dob             DateTime @db.Date
+  gender          String
   health_problem  String
   blood_group     String
   subpackage_name String
