@@ -25,9 +25,9 @@ module.exports = class AdminController extends BaseController {
         "458737510452-787oh2it2510hn3eocquabiq3gia9u5i.apps.googleusercontent.com",
     });
 
-    const { email_verified, name, email, picture } = user;
+    const { name, email, picture } = user;
 
-    if (email_verified) {
+    if (user) {
       try {
         const findData = await prisma.user.findUnique({
           where: {
@@ -71,7 +71,7 @@ module.exports = class AdminController extends BaseController {
         res.json({ status: "error", error: "Some thing went wrong" });
       }
     } else {
-      res.json({ status: "error", error: "email is not verified !" });
+      res.json({ status: "error", error: "Something went wrong !" });
     }
   }
 };
