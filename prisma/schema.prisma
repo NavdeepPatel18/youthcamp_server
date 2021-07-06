@@ -187,17 +187,17 @@ model campFaqs {
 }
 
 model User {
-  id          BigInt   @id @default(autoincrement())
-  name        String
-  mobileno    BigInt
-  email       String
-  idprof_name String
-  id_prof     String
-  dob         DateTime @db.Date
-  gender      String
-  photo       String
+  id    BigInt @id @default(autoincrement())
+  name  String
+  // mobileno    BigInt
+  email String
+  // idprof_name String
+  // id_prof     String
+  // dob         DateTime @db.Date
+  // gender      String
+  photo String
 
-  registration registration[]
+  // registration registration[]
 }
 
 model registration {
@@ -219,12 +219,11 @@ model registration {
   package_id Int
   package    packageName @relation(fields: [package_id], references: [id])
 
-  user_id BigInt
-  user    User   @relation(fields: [user_id], references: [id])
+  // user_id BigInt
+  // user    User   @relation(fields: [user_id], references: [id])
 
   participants participants[]
-  checkout     checkout?
-  payment      payment?
+
 }
 
 model participants {
@@ -243,23 +242,23 @@ model participants {
   registration    registration @relation(fields: [registration_id], references: [id])
 }
 
-model checkout {
-  id           BigInt   @id @default(autoincrement())
-  method       String
-  booking_date DateTime @db.Date
-  price        Float
-  tax_price    Float
-  total_price  Float
+// model checkout {
+//   id           BigInt   @id @default(autoincrement())
+//   method       String
+//   booking_date DateTime @db.Date
+//   price        Float
+//   tax_price    Float
+//   total_price  Float
 
-  registration_id BigInt
-  registration    registration @relation(fields: [registration_id], references: [id])
-}
+//   registration_id BigInt
+//   registration    registration @relation(fields: [registration_id], references: [id])
+// }
 
-model payment {
-  id             BigInt @id @default(autoincrement())
-  payment_method String
-  payment_token  String
+// model payment {
+//   id             BigInt @id @default(autoincrement())
+//   payment_method String
+//   payment_token  String
 
-  registration_id BigInt
-  registration    registration @relation(fields: [registration_id], references: [id])
-}
+//   registration_id BigInt
+//   registration    registration @relation(fields: [registration_id], references: [id])
+// }

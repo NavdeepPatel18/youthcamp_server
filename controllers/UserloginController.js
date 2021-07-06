@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const { OAuth2Client } = require("google-auth-library");
@@ -27,14 +26,19 @@ module.exports = class AdminController extends BaseController {
           "458737510452-787oh2it2510hn3eocquabiq3gia9u5i.apps.googleusercontent.com",
       });
 
-      const { email_verified, name, email, picture } = user;
+      const { email_verified, name, email, picture } = user.payload;
+
+      console.log(email_verified, name, email, picture);
+
+      console.log(user.payload);
 
       if (email_verified) {
-        const findData = await prisma.user.findUnique({
+        const findData = await prisma.user.findFirst({
           where: {
             email: email,
           },
         });
+        console.log(findData);
 
         if (findData) {
           const token = jwt.sign(
@@ -45,15 +49,28 @@ module.exports = class AdminController extends BaseController {
             JWT_SECRET,
             { expiresIn: "1h" }
           );
-          return res.json({ status: "ok", data: token, userData: findData });
-        } else {
-          const addUser = await prisma.user.create({
-            data: {
-              name: name,
-              email: email,
-              photo: picture,
+          return this.sendJSONResponse(
+            res,
+            null,
+            {
+              length: 1,
             },
-          });
+            { token, findData }
+          );
+        } else {
+          try {
+            const addUser = await prisma.user.create({
+              data: {
+                name: name,
+                email: email,
+                photo: picture,
+              },
+            });
+            console.log(addUser);
+          } catch (err) {
+            console.log(err);
+          }
+
           if (addUser) {
             const token = jwt.sign(
               {
@@ -63,15 +80,23 @@ module.exports = class AdminController extends BaseController {
               JWT_SECRET,
               { expiresIn: "1h" }
             );
-            return res.json({ status: "ok", data: token, userData: addUser });
+            return this.sendJSONResponse(
+              res,
+              null,
+              {
+                length: 1,
+              },
+              { token, addUser }
+            );
           } else {
-            res.json({ status: "error", error: "Some thing went wrong" });
+            res.json({ status: "error", error: "error" });
           }
         }
       } else {
         res.json({ status: "error", error: "email is not verified !" });
       }
     } catch (err) {
+      console.log(err);
       res.json({ status: "error", error: "Some thing went wrong" });
     }
   }
