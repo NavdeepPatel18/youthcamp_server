@@ -19,61 +19,60 @@ module.exports = class AdminController extends BaseController {
   async googlelogin(req, res) {
     const { tokenId } = req.body;
 
-    res.json({ status: "ok", data: req.body });
+    // res.json({ status: "ok", data: req.body });
+    try {
+      const user = await client.verifyIdToken({
+        idToken: tokenId,
+        audience:
+          "458737510452-787oh2it2510hn3eocquabiq3gia9u5i.apps.googleusercontent.com",
+      });
 
-    // const user = await client.verifyIdToken({
-    //   idToken: tokenId,
-    //   audience:
-    //     "458737510452-787oh2it2510hn3eocquabiq3gia9u5i.apps.googleusercontent.com",
-    // });
+      const { email_verified, name, email, picture } = user;
 
-    // const { email_verified, name, email, picture } = user;
+      if (email_verified) {
+        const findData = await prisma.user.findUnique({
+          where: {
+            email: email,
+          },
+        });
 
-    // if (email_verified) {
-    //   try {
-    //     const findData = await prisma.user.findUnique({
-    //       where: {
-    //         email: email,
-    //       },
-    //     });
-
-    //     if (findData) {
-    //       const token = jwt.sign(
-    //         {
-    //           userId: user.id,
-    //           userType: "USER",
-    //         },
-    //         JWT_SECRET,
-    //         { expiresIn: "1h" }
-    //       );
-    //       return res.json({ status: "ok", data: token, userData: findData });
-    //     } else {
-    //       const addUser = await prisma.user.create({
-    //         data: {
-    //           name: name,
-    //           email: email,
-    //           photo: picture,
-    //         },
-    //       });
-    //       if (addUser) {
-    //         const token = jwt.sign(
-    //           {
-    //             userId: addUser.id,
-    //             userType: "USER",
-    //           },
-    //           JWT_SECRET,
-    //           { expiresIn: "1h" }
-    //         );
-    //         return res.json({ status: "ok", data: token, userData: addUser });
-    //       } else {
-    //         res.json({ status: "error", error: "Some thing went wrong" });
-    //       }
-    //     }
-    //   } catch (err) {
-    //     res.json({ status: "error", error: "Some thing went wrong" });
-    //   }
-    // } else {
-    //   res.json({ status: "error", error: "email is not verified !" });
-    // }
+        if (findData) {
+          const token = jwt.sign(
+            {
+              userId: user.id,
+              userType: "USER",
+            },
+            JWT_SECRET,
+            { expiresIn: "1h" }
+          );
+          return res.json({ status: "ok", data: token, userData: findData });
+        } else {
+          const addUser = await prisma.user.create({
+            data: {
+              name: name,
+              email: email,
+              photo: picture,
+            },
+          });
+          if (addUser) {
+            const token = jwt.sign(
+              {
+                userId: addUser.id,
+                userType: "USER",
+              },
+              JWT_SECRET,
+              { expiresIn: "1h" }
+            );
+            return res.json({ status: "ok", data: token, userData: addUser });
+          } else {
+            res.json({ status: "error", error: "Some thing went wrong" });
+          }
+        }
+      } else {
+        res.json({ status: "error", error: "email is not verified !" });
+      }
+    } catch (err) {
+      res.json({ status: "error", error: "Some thing went wrong" });
+    }
   }
 };
