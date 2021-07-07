@@ -36,7 +36,8 @@ const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/png"
+    file.mimetype === "image/png" ||
+    file.mimetype === "application/pdf"
   ) {
     cb(null, true);
   } else {
@@ -148,7 +149,8 @@ router.delete("/deletetravelstories/:id", (req, res) =>
 router.post(
   "/createcamp",
   upload.fields([
-    { name: "basicphoto", maxCount: 2 },
+    { name: "basicphoto", maxCount: 1 },
+    { name: "brochure", maxCount: 1 },
     { name: "packagephoto" },
     { name: "schedulephoto" },
   ]),
