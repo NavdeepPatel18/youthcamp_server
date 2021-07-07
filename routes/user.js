@@ -69,4 +69,9 @@ router.post(
   (req, res) => registrationController.addParticipate(req, res)
 );
 
+// Get Registration
+router.get("/getregistration", (req, res) =>
+  registrationController.getRegistration(req, res)
+);
+
 module.exports = router;

@@ -87,7 +87,7 @@ module.exports = class RegisterUser extends BaseController {
         status: "pendding",
       };
       if (req.userType === "USER") {
-          console.log(req.userId)
+        console.log(req.userId);
         data.user_id = BigInt(req.userId);
       } else {
         try {
@@ -257,6 +257,55 @@ module.exports = class RegisterUser extends BaseController {
       res.json({
         status: "error, Participant id not defined",
       });
+    }
+  }
+
+  async getRegistration(req, res) {
+    if (!req.isAuth) {
+      return res.json({ status: "error", error: "You  not have access" });
+    }
+
+    if (req.userType === "USER") {
+      try {
+        const result = await prisma.registration.findMany({
+          where: {
+            user_id: BigInt(req.userId),
+          },
+          include: {
+            participants: true,
+          },
+        });
+        return this.sendJSONResponse(
+          res,
+          "Registration Successfully.",
+          {
+            length: 1,
+          },
+          result
+        );
+      } catch (error) {
+        console.log(error);
+        res.json({ status: "error", error: "Something wrong" });
+      }
+    } else {
+      try {
+        const result = await prisma.registration.findMany({
+          include: {
+            participants: true,
+          },
+        });
+        return this.sendJSONResponse(
+          res,
+          "Registration Successfully.",
+          {
+            length: 1,
+          },
+          result
+        );
+      } catch (error) {
+        console.log(error);
+        res.json({ status: "error", error: "Somthing wrong" });
+      }
     }
   }
 
