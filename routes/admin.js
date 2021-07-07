@@ -85,8 +85,9 @@ router.post("/updateblog/:id", upload.single("blogphoto"), (req, res) =>
 router.get("/getblog", (req, res) => blogController.getBlog(req, res));
 
 // Delete blog
-router.delete("/deleteblog/:id", (req, res) => blogController.deleteBlog(req, res));
-
+router.delete("/deleteblog/:id", (req, res) =>
+  blogController.deleteBlog(req, res)
+);
 
 // Create contactUs
 router.post(
@@ -113,7 +114,10 @@ router.delete("/deleteteam/:id", (req, res) =>
 // Create Home
 router.post(
   "/createhome",
-  upload.fields([{ name: "homephoto", maxCount: 2 }]),
+  upload.fields([
+    { name: "homephoto", maxCount: 1 },
+    { name: "hometitlephoto", maxCount: 1 },
+  ]),
   (req, res) => homeController.createHomePage(req, res)
 );
 

@@ -150,9 +150,8 @@ model packageName {
   price         Float  @db.Real
   noday_nonight String
 
-  camp_id      Int
-  camp         Camp           @relation(fields: [camp_id], references: [id])
-  registration registration[]
+  camp_id Int
+  camp    Camp @relation(fields: [camp_id], references: [id])
 }
 
 model schedule {
@@ -187,56 +186,57 @@ model campFaqs {
 }
 
 model User {
-  id    BigInt @id @default(autoincrement())
-  name  String
-  // mobileno    BigInt
-  email String
-  // idprof_name String
-  // id_prof     String
-  // dob         DateTime @db.Date
-  // gender      String
-  photo String
+  id          BigInt    @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  photo       String?
+  mobileno    BigInt?
+  idprof_name String?
+  id_prof1    String?
+  id_prof2    String?
+  dob         DateTime? @db.Date
+  gender      String?
 
-  // registration registration[]
+  registration registration?
 }
 
 model registration {
-  id              BigInt   @id @default(autoincrement())
-  name            String
-  mobileno        BigInt
-  emailid         String
-  idprof_name     String
-  id_prof         String
-  dob             DateTime @db.Date
-  gender          String
-  health_problem  String
-  blood_group     String
-  subpackage_name String
-  start_date      DateTime @db.Date
-  end_date        DateTime @db.Date
-  status          String
+  id             BigInt   @id @default(autoincrement())
+  name           String
+  mobileno       BigInt
+  email          String
+  idprof_name    String?
+  id_prof1       String?
+  id_prof2       String?
+  dob            DateTime @db.Date
+  gender         String
+  health_problem String?
+  blood_group    String
+  camp_name      String
+  package_name   String
+  travel_mode    String
+  start_date     DateTime @db.Date
+  end_date       DateTime @db.Date
+  status         String
 
-  package_id Int
-  package    packageName @relation(fields: [package_id], references: [id])
-
-  // user_id BigInt
-  // user    User   @relation(fields: [user_id], references: [id])
+  user_id BigInt
+  user    User   @relation(fields: [user_id], references: [id])
 
   participants participants[]
-
 }
 
 model participants {
   id             BigInt   @id @default(autoincrement())
   name           String
-  mobile_no      BigInt
+  mobileno       BigInt
   email          String
-  gender         String
-  id_proof_name  String
-  id_proof       String
+  idprof_name    String?
+  id_prof1       String?
+  id_prof2       String?
   dob            DateTime @db.Date
-  health_problem String
-  blood_group    String
+  gender         String?
+  health_problem String?
+  blood_group    String?
 
   registration_id BigInt
   registration    registration @relation(fields: [registration_id], references: [id])
