@@ -148,17 +148,15 @@ module.exports = class CampController extends BaseController {
 
           console.log(data);
 
-          if (req.files.basicphoto[0]) {
+          if (File.basicphoto) {
             data.photo =
               process.env.BaseUrl +
               "/images/" +
               req.files.basicphoto[0].filename;
           }
-          if (req.files.basicphoto[1]) {
+          if (File.brochure) {
             data.brochure =
-              process.env.BaseUrl +
-              "/images/" +
-              req.files.basicphoto[0].filename;
+              process.env.BaseUrl + "/images/" + req.files.brochure[0].filename;
           }
 
           await prisma.campOtherDetail.deleteMany({
