@@ -32,7 +32,7 @@ async function addUser(data, file) {
     });
     console.log(userId);
     if (userId) {
-      data.user_id = userId;
+      data.user_id = BigInt(userId);
     } else {
       return res.json({
         status: "error",
@@ -88,7 +88,7 @@ module.exports = class RegisterUser extends BaseController {
       };
       if (req.userType === "USER") {
           console.log(req.userId)
-        data.user_id = req.userId;
+        data.user_id = BigInt(req.userId);
       } else {
         try {
           const find = await prisma.user.findUnique({
@@ -100,7 +100,7 @@ module.exports = class RegisterUser extends BaseController {
           if (!find) {
             await addUser(data, req.files);
           } else {
-            data.user_id = find.id;
+            data.user_id = BigInt(find.id);
             console.log(data.user_id);
           }
         } catch (err) {}

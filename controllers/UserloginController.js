@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const { OAuth2Client } = require("google-auth-library");
 
+const JSONBig = require('json-bigint');
 const BaseController = require("./BaseController");
 const BadRequest = require("../errors/BadRequest");
 const NotFound = require("../errors/NotFound");
@@ -28,22 +29,18 @@ module.exports = class AdminController extends BaseController {
 
       const { email_verified, name, email, picture } = user.payload;
 
-      console.log(email_verified, name, email, picture);
-
-      console.log(user.payload);
-
       if (email_verified) {
         const findData = await prisma.user.findUnique({
           where: {
             email: email,
           },
         });
-        console.log(findData);
+        // console.log(findData);
 
         if (findData) {
           const token = jwt.sign(
             {
-              userId: findData.id,
+              userId: JSONBig.stringify(findData.id),
               userType: "USER",
             },
             JWT_SECRET,
@@ -66,7 +63,6 @@ module.exports = class AdminController extends BaseController {
                 photo: picture,
               },
             });
-            console.log(addUser);
           } catch (err) {
             console.log(err);
           }
