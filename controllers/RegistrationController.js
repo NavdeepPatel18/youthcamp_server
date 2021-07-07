@@ -87,6 +87,7 @@ module.exports = class RegisterUser extends BaseController {
         status: "pendding",
       };
       if (req.userType === "USER") {
+          console.log(req.userId)
         data.user_id = req.userId;
       } else {
         try {

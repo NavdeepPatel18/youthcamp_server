@@ -33,7 +33,7 @@ module.exports = class AdminController extends BaseController {
       console.log(user.payload);
 
       if (email_verified) {
-        const findData = await prisma.user.findFirst({
+        const findData = await prisma.user.findUnique({
           where: {
             email: email,
           },
@@ -43,11 +43,11 @@ module.exports = class AdminController extends BaseController {
         if (findData) {
           const token = jwt.sign(
             {
-              userId: user.id,
+              userId: findData.id,
               userType: "USER",
             },
             JWT_SECRET,
-            { expiresIn: "1h" }
+            { expiresIn: "1d" }
           );
           return this.sendJSONResponse(
             res,
@@ -78,7 +78,7 @@ module.exports = class AdminController extends BaseController {
                 userType: "USER",
               },
               JWT_SECRET,
-              { expiresIn: "1h" }
+              { expiresIn: "1d" }
             );
             return this.sendJSONResponse(
               res,

@@ -218,11 +218,11 @@ model registration {
   start_date     DateTime @db.Date
   end_date       DateTime @db.Date
   status         String
+  
+  participants participants[]
 
   user_id BigInt
   user    User   @relation(fields: [user_id], references: [id])
-
-  participants participants[]
 }
 
 model participants {
