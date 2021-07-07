@@ -197,7 +197,7 @@ model User {
   dob         DateTime? @db.Date
   gender      String?
 
-  registration registration?
+  registration registration[]
 }
 
 model registration {
