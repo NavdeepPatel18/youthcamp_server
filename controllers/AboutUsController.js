@@ -11,6 +11,12 @@ module.exports = class AboutUsController extends BaseController {
 
     const { title, description } = req.body;
 
+    const data = {
+      title: title,
+      description: description,
+      admin_id: req.userId,
+    };
+
     const type = await prisma.aboutUs.findFirst({
       where: {
         admin_id: req.userId,
@@ -19,15 +25,14 @@ module.exports = class AboutUsController extends BaseController {
 
     if (type) {
       try {
+        if (req.file) {
+          data.photo = process.env.BaseUrl + "/images/" + req.file.filename;
+        }
         await prisma.aboutUs.update({
           where: {
             id: type.id,
           },
-          data: {
-            title: title,
-            description: description,
-            photo: process.env.BaseUrl + "/images/" + req.file.filename,
-          },
+          data: data,
         });
 
         res.json({ status: "ok" });
@@ -37,13 +42,11 @@ module.exports = class AboutUsController extends BaseController {
       }
     } else {
       try {
+        if (req.file) {
+          data.photo = process.env.BaseUrl + "/images/" + req.file.filename;
+        }
         await prisma.aboutUs.create({
-          data: {
-            title: title,
-            description: description,
-            photo: process.env.BaseUrl + "/images/" + req.file.filename,
-            admin_id: req.userId,
-          },
+          data: data,
         });
 
         res.json({ status: "ok" });

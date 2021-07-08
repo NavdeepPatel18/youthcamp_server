@@ -23,12 +23,13 @@ model Admin {
 }
 
 model Home {
-  id          Int    @id @default(autoincrement())
-  title       String @db.VarChar(255)
-  description String
-  photo       String
-  title_photo String
-  youtube_url String
+  id                  Int    @id @default(autoincrement())
+  title               String @db.VarChar(255)
+  description         String
+  photo               String
+  title_photo         String
+  youtube_url         String
+  youtube_description String
 
   homeQuotes    homeQuotes[]
   travelQuotes  travelQuotes[]
@@ -218,7 +219,7 @@ model registration {
   start_date     DateTime @db.Date
   end_date       DateTime @db.Date
   status         String
-  
+
   participants participants[]
 
   user_id BigInt

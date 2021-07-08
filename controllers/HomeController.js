@@ -10,14 +10,19 @@ module.exports = class HomeController extends BaseController {
     }
 
     if (req.body.data) {
-      const { title, description, youtubeUrl, homeQuotes } = JSON.parse(
-        req.body.data
-      );
+      const {
+        title,
+        description,
+        youtubeUrl,
+        youtube_description,
+        homeQuotes,
+      } = JSON.parse(req.body.data);
 
       const data = {
         title: title,
         description: description,
         youtube_url: youtubeUrl,
+        youtube_description: youtube_description,
         admin_id: req.userId,
         homeQuotes: {
           create: homeQuotes,
