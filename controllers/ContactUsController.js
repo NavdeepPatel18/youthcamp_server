@@ -90,7 +90,7 @@ module.exports = class ContactUsController extends BaseController {
     if (req.body && req.file) {
       try {
         const contactUsId = parseInt(req.params.id);
-        const { name, designation } = req.body;
+        const { name, designation } = JSON.parse(req.body.teamMate);
         const teamMate = {
           name: name,
           designation: designation,

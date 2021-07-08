@@ -74,10 +74,12 @@ module.exports = class HomeController extends BaseController {
               process.env.BaseUrl +
               "/images/" +
               req.files.homephoto[0].filename;
+          }
+          if (req.files.hometitlephoto) {
             data.title_photo =
               process.env.BaseUrl +
               "/images/" +
-              req.files.homephoto[1].filename;
+              req.files.hometitlephoto[0].filename;
           }
 
           await prisma.home.create({
