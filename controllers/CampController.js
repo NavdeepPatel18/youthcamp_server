@@ -147,6 +147,7 @@ module.exports = class CampController extends BaseController {
           };
 
           console.log(data);
+          const File = req.files;
 
           if (File.basicphoto) {
             data.photo =
